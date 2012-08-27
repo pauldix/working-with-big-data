@@ -32,63 +32,66 @@
 <!-- Begin slides. Just make elements with a class of slide. -->
 
 <section class="slide">
-  <h1>Lesson 1: Building a Big Data Infrastructure Part 1</h1>
+  <h1>Lesson 2: Building a Big Data Infrastructure Part 2</h1>
 </section>
 
 <section class="slide">
-  <h1>Unstructured Storage &amp; Hadoop</h1>
+  <h1>Structured Storage &amp; Cassandra</h1>
 </section>
 
 <section class="slide">
-	<h2>Unstructured Data</h2>
+	<h2>Structured Data</h2>
 	<ol>
 	  <li class="slide">
-	    <h3>Log Files</h3>
+	    <h3>More like tables</h3>
 	  </li>
 	  <li class="slide">
-	    <h3>Text</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Unknown Formats</h3>
+	    <h3>Fast write and query times</h3>
 	  </li>
 	</ol>
 </section>
 
 <section class="slide">
-  <h2>Hadoop</h2>
+  <h2>Cassandra</h2>
   <ol>
-    <li class="slide">Open source</li>
-    <li class="slide">HDFS: Distributed file system modeled after GFS</li>
-    <li class="slide">MapReduce: Distributed batch processing modeled after Google's MapReduce</li>
+    <li class="slide">Modeled after Google's BigTable</li>
+    <li class="slide">Distributed</li>
+    <li class="slide">Column Oriented Database</li>
+    <li class="slide">Open source originally from Facebook</li>
+    <li class="slide">Used in Twitter, LinkedIn, Netflix, etc.</li>
   </ol>
 </section>
 
 <section class="slide">
-  <h2>Hadoop's Wider Ecosystem</h2>
+  <h2>Column Oriented Properties</h2>
   <ol>
+    <li class="slide">Column names not set</li>
+    <li class="slide">Wide rows</li>
+    <li class="slide">Rows occupy non-contiguous disk space</li>
+</section>
+
+<section class="slide">
+  <h2>Other Column Oriented Data Stores</h2>
+  <ol>
+    <li class="slide">BigTable</li>
     <li class="slide">HBase</li>
-    <li class="slide">ZooKeeper</li>
-    <li class="slide">Hive</li>
-    <li class="slide">Cascading</li>
-    <li class="slide">Pig</li>
-    <li class="slide">Flume</li>
+    <li class="slide">DynamoDB</li>
   </ol>
 </section>
 
 <section class="slide">
-	<h2>Batch Processing</h2>
-	<ol>
-	  <li class="slide">
-	    <h3>Like cron</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Run once or frequently</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Ship code to data</h3>
-	  </li>
-	</ol>
+  <h2>CAP Theorem</h2>
+  <ol>
+    <li class="slide">Consistency</li>
+    <li class="slide">Availability</li>
+    <li class="slide">Partition Tolerance</li>
+  </ol>
 </section>
+
+<section class="slide">
+  <h1>Cassandra relaxes consistency</h1>
+</section>
+
 <!-- End slides. -->
 
 
