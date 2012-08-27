@@ -32,72 +32,50 @@
 <!-- Begin slides. Just make elements with a class of slide. -->
 
 <section class="slide">
-  <h1>Lesson 1: Building a Big Data Infrastructure Part 1</h1>
+  <h1>Lesson 3: Building a Big Data Infrastructure Part 3</h1>
 </section>
 
 <section class="slide">
-  <h1>Unstructured Storage &amp; Hadoop</h1>
+  <h1>Real-time Processing &amp; Messaging</h1>
 </section>
 
 <section class="slide">
-	<h2>Unstructured Data</h2>
-	<ol>
-	  <li class="slide">
-	    <h3>Log Files</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Text</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Unknown Formats</h3>
-	  </li>
-	</ol>
-</section>
-
-<section class="slide">
-  <h2>Hadoop</h2>
+	<h2>Messaging Semantics</h2>
   <ol>
-    <li class="slide">Open source</li>
-    <li class="slide">HDFS: Distributed file system modeled after GFS</li>
-    <li class="slide">MapReduce: Distributed batch processing modeled after Google's MapReduce</li>
+    <li class="slide">Producers or Publishers</li>
+    <li class="slide">Brokers, Queues</li>
+    <li class="slide">Consumers or Workers</li>
+    <li class="slide">First in, First out</li>
   </ol>
 </section>
 
 <section class="slide">
-  <h2>Hadoop's Wider Ecosystem</h2>
+	<h2>What Messaging is Good For</h2>
   <ol>
-    <li class="slide">HBase</li>
-    <li class="slide">ZooKeeper</li>
-    <li class="slide">Hive</li>
-    <li class="slide">Cascading</li>
-    <li class="slide">Pig</li>
-    <li class="slide">Flume</li>
+    <li class="slide">Long Running Tasks</li>
+    <li class="slide">Managing Bursty Events</li>
+    <li class="slide">Decoupling Services</li>
   </ol>
 </section>
 
 <section class="slide">
-	<h2>Batch Processing</h2>
-	<ol>
-	  <li class="slide">
-	    <h3>Like cron</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Run once or frequently</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Ship code to data</h3>
-	  </li>
-	</ol>
+	<h2>Kafka</h2>
+  <ol>
+    <li class="slide">Distributed - Brokers, Producers, Consumers</li>
+    <li class="slide">Persistent</li>
+    <li class="slide">High Throughput</li>
+    <li class="slide">Queues through Topics</li>
+    <li class="slide">Open Source - Built at LinkedIn</li>
+  </ol>
 </section>
 
 <section class="slide">
-  <h2>What Hadoop &amp; Batch Processing are Good For</h2>
+  <h2>Other Messaging Systems</h2>
   <ol>
-    <li class="slide">Storing copies of all data</li>
-    <li class="slide">Storing and grepping through log files</li>
-    <li class="slide">Joining data from disparate sources</li>
-    <li class="slide">Building Indexes</li>
-    <li class="slide">Building Models</li>
+    <li class="slide">RabbitMQ</slide>
+    <li class="slide">Kestrel</slide>
+    <li class="slide">Redis</slide>
+    <li class="slide">ZeroMQ</slide>
   </ol>
 </section>
 
