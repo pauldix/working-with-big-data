@@ -7,7 +7,6 @@ http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-dow
 Look for x64, agree to the license, and download the file. I did this on my laptop and copied it up to the server via scp. Once it's up there follow these installation instructions:
 chmod +x jdk-6u32-linux-x64.bin
 ./jdk-6u32-linux-x64.bin
-sudo mv jdk1.6.0_32 /usr/lib/jvm/
 sudo mkdir -p /usr/lib/jvm
 sudo mv jdk1.6.0_32 /usr/lib/jvm/jdk1.6.0_32
 
