@@ -32,84 +32,63 @@
 <!-- Begin slides. Just make elements with a class of slide. -->
 
 <section class="slide">
-	<h1>What is Big Data?</h1>
+  <h1>Lesson 1: Building a Big Data Infrastructure Part 1</h1>
 </section>
 
 <section class="slide">
-	<blockquote>
-	  Big data is the combination of infrastructure, algorithms, and visualizations around making sense of user and machine generated data.
-	</blockquote>
+  <h1>Unstructured Storage &amp; Hadoop</h1>
 </section>
 
 <section class="slide">
-  <blockquote>
-    Big data does not necessarily mean: more data than you can effectively work with on a single computer.
-  </blockquote>
-</section>
-
-<section class="slide">
-  <blockquote>
-    Big data is about gaining insight from data regardless of the size of the data set.
-  </blockquote>
-</section>
-
-<section class="slide">
-	<h2>Questions Big Data can Answer</h2>
+	<h2>Unstructured Data</h2>
 	<ol>
 	  <li class="slide">
-	    <h3>What are my users doing on my site?</h3>
-	  </li>
-  	<li class="slide">
-	    <h3>Is something spam?</h3>
+	    <h3>Log Files</h3>
 	  </li>
 	  <li class="slide">
-	    <h3>What items or users are like each other?</h3>
+	    <h3>Text</h3>
 	  </li>
 	  <li class="slide">
-	    <h3>What items might a user like?</h3>
+	    <h3>Unknown Formats</h3>
 	  </li>
 	</ol>
 </section>
 
 <section class="slide">
-	<h2>Types of Data</h2>
-	<ol>
-	  <li class="slide">
-	    <h3>User Generated</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Machine Generated</h3>
-	  </li>
-  	<li class="slide">
-	    <h3>Structured</h3>
-	  </li>
-	  <li class="slide">
-	    <h3>Unstructured</h3>
-	  </li>
-	</ol>
-</section>
-
-<section class="slide">
-  <h2>Goals of a Big Data Infrastructure</h2>
+  <h2>Hadoop</h2>
   <ol>
-    <li class="slide">
-      <h3>Scalability</h3>
-    </li>
-    <li class="slide">
-      <h3>Experimentation</h3>
-    </li>
-    <li class="slide">
-      <h3>Mining business intelligence</h3>
-    </li>
-    <li class="slide">
-      <h3>Making recommendations</h3>
-    </li>
-    <li class="slide">
-      <h3>Monitoring performance</h3>
-    </li>
+    <li class="slide">Open source</li>
+    <li class="slide">HDFS: Distributed file system modeled after GFS</li>
+    <li class="slide">MapReduce: Distributed batch processing modeled after Google's MapReduce</li>
   </ol>
 </section>
 
+<section class="slide">
+  <h2>Hadoop's Wider Ecosystem</h2>
+  <ol>
+    <li class="slide">HBase</li>
+    <li class="slide">ZooKeeper</li>
+    <li class="slide">Hive</li>
+    <li class="slide">Cascading</li>
+    <li class="slide">Pig</li>
+    <li class="slide">Flume</li>
+  </ol>
+</section>
+
+<section class="slide">
+	<h2>Batch Processing</h2>
+	<ol>
+	  <li class="slide">
+	    <h3>Like cron</h3>
+	  </li>
+	  <li class="slide">
+	    <h3>Run once or frequently</h3>
+	  </li>
+	  <li class="slide">
+	    <h3>Ship code to data</h3>
+	  </li>
+	</ol>
+</section>
 <!-- End slides. -->
 
 
