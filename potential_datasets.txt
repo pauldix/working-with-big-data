@@ -1,0 +1,7 @@
+Hotel Reviews: http://archive.ics.uci.edu/ml/datasets/OpinRank+Review+Dataset
+SMS Spam: http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/
+Use the HNSearchAPI: http://www.hnsearch.com/api
+StackOverflow Data Dump: http://blog.stackoverflow.com/2011/09/creative-commons-data-dump-sep-11/
+You'll need to unzip it using a program that supports 7zip. On OS X you can use The Unarchiver: http://itunes.apple.com/app/the-unarchiver/id425424353
+
+classification: assign posts to either infrastructure, algorithms, or visualizations

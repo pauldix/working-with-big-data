@@ -1,0 +1,4 @@
+source :rubygems
+gem "ruby-readability", :require => 'readability'
+gem "json"
+gem "awesome_print"

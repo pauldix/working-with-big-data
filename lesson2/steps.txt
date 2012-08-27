@@ -1,0 +1,193 @@
+Part 1 install Hadoop:
+First, we'll need to install hadoop. I'll be using a large instance on Amazon EC2 running Ubuntu LTS to run through all examples. We'll be installing Cloudera's Hadoop on a single node.
+
+First, install Sun JDK 6. Go to the following page:
+http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html
+
+Look for x64, agree to the license, and download the file. I did this on my laptop and copied it up to the server via scp. Once it's up there follow these installation instructions:
+chmod +x jdk-6u32-linux-x64.bin
+./jdk-6u32-linux-x64.bin
+sudo mv jdk1.6.0_32 /usr/lib/jvm/
+sudo mkdir -p /usr/lib/jvm
+sudo mv jdk1.6.0_32 /usr/lib/jvm/jdk1.6.0_32
+
+sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/jdk1.6.0_32/bin/javac 1
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/jdk1.6.0_32/bin/java 1
+sudo update-alternatives --install /usr/bin/javaws javaws /usr/lib/jvm/jdk1.6.0_32/bin/javaws 1
+
+# now we're ready to install hadoop. taken from https://ccp.cloudera.com/display/CDH4DOC/Installing+CDH4+on+a+Single+Linux+Node+in+Pseudo-distributed+Mode
+
+# update apt to be able to access cloudera
+wget http://archive.cloudera.com/cdh4/one-click-install/lucid/amd64/cdh4-repository_1.0_all.deb
+sudo dpkg -i cdh4-repository_1.0_all.deb
+curl -s http://archive.cloudera.com/cdh4/ubuntu/lucid/amd64/cdh/archive.key | sudo apt-key add -
+sudo apt-get update
+
+# install hadoop
+sudo su
+export JAVA_HOME=/usr/lib/jvm/jdk1.6.0_32/
+apt-get install hadoop-0.20-conf-pseudo
+
+# see the files it installs
+dpkg -L hadoop-0.20-conf-pseudo
+# open this to see config settings
+/etc/hadoop/conf.pseudo.mr1/hdfs-site.xml
+# look for data.dir. mention that you'd want to move it
+
+# set the JAVA_HOME for hadoop
+sudo vim /usr/lib/hadoop/libexec/hadoop-config.sh
+JAVA_HOME=/usr/lib/jvm/jdk1.6.0_32/
+sudo vim /usr/lib/hadoop-0.20-mapreduce/bin/hadoop-config.sh
+JAVA_HOME=/usr/lib/jvm/jdk1.6.0_32/
+
+# start it up
+# format the hdfs file system
+sudo -u hdfs hdfs namenode -format
+
+# start hdfs
+sudo /etc/init.d/hadoop-hdfs-namenode start
+sudo /etc/init.d/hadoop-hdfs-secondarynamenode start
+sudo /etc/init.d/hadoop-hdfs-datanode start
+
+# check to see it's working. first, go into AWS and open up the port 50070. Now go to the machine in a browser
+ec2-107-22-5-153.compute-1.amazonaws.com:50070
+
+# create the temp directory
+sudo -u hdfs hadoop fs -mkdir /tmp
+sudo -u hdfs hadoop fs -chmod -R 1777 /tmp
+
+# create the map reduce system directories
+sudo -u hdfs hadoop fs -mkdir /var
+sudo -u hdfs hadoop fs -mkdir /var/lib
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop-hdfs
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop-hdfs/cache
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop-hdfs/cache/mapred
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred
+sudo -u hdfs hadoop fs -mkdir /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
+sudo -u hdfs hadoop fs -chmod 1777 /var/lib/hadoop-hdfs/cache/mapred/mapred/staging
+sudo -u hdfs hadoop fs -chown -R mapred /var/lib/hadoop-hdfs/cache/mapred
+
+# verify hdfs file structure
+sudo -u hdfs hadoop fs -ls -R /
+
+# start mapreduce
+sudo /etc/init.d/hadoop-0.20-mapreduce-jobtracker start
+sudo /etc/init.d/hadoop-0.20-mapreduce-tasktracker start
+
+# check to see it's working. go into AWS and open up port 50030
+ec2-107-22-5-153.compute-1.amazonaws.com:50030
+
+# explain maptask and reducetask capacity
+
+# create home directories in hdfs for the users that will be running mr tasks
+sudo -u hdfs hadoop fs -mkdir  /user/ubuntu
+sudo -u hdfs hadoop fs -chown ubuntu /user/ubuntu
+
+Part 2 copy files to Hadoop:
+We'll be working with some of the data dump from StackOverflow. You can find a link to it here: http://blog.stackoverflow.com/2011/09/creative-commons-data-dump-sep-11/
+
+You'll need a bittorrent client to download it. I use Vuze, but there are many out there. Once you've downloaded it you'll need a program that can unpack a 7zip archive. On OS X I used The Unarchiver, which can be found for free at http://itunes.apple.com/app/the-unarchiver/id425424353.
+
+Unpack the stackoverflow.com.7z.001 archive. Large 7 GB file called posts.xml. Let's split into many files since that's better for Hadoop:
+
+On Ubuntu:
+
+# get the data dump
+wget http://www.clearbits.net/get/1836-sept-2011.torrent
+sudo apt-get install rtorrent
+rtorrent 1836-sept-2011.torrent
+
+# unpack it
+sudo apt-get install p7zip-full
+7z e -ostacko stackoverflow.com.7z.001
+
+# copy the files up to hdfs
+hadoop fs -mkdir input
+# if you get an error that the name node is in safe mode do this:
+sudo /etc/init.d/hadoop-hdfs-namenode restart
+
+hadoop fs -put *.xml input
+hadoop fs -ls input
+
+Part 3 Write and run a streaming job:
+# let's get something small to work with
+tail -n 100000 posts.xml > posts_small.xml
+less readme.txt # see the post type id
+less posts_small.xml # see that it's 1 line per post. also, see the "tags" structure
+
+# write the mapper and test it
+sudo apt-get install ruby1.9.3
+chmod +x mapper.rb
+cat posts_small.xml | ./mapper.rb
+
+# write the reducer and test it
+chmod +x reducer.rb
+cat posts_small.xml | ./mapper.rb | sort | ./reducer.rb # talk about the sort in the shuffle
+
+# now write the second phase to sort the output. we'll use this later
+cat posts_small.xml | ./mapper.rb | sort | ./reducer.rb | ./mapper_sort.rb | sort | ./reducer_sort.rb
+
+# now run it as a hadoop job
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.0.1.jar -input input/posts_small.xml -output output -mapper mapper.rb -reducer reducer.rb -file mapper.rb -file reducer.rb
+
+And check it out in the job tracker:
+ec2-107-22-5-153.compute-1.amazonaws.com:50030
+
+Part 4 Install Cassandra:
+# note that the debian packages will automatically install open-jdk. You'll want to avoid that because of hadoop.
+wget http://downloads.datastax.com/community/dsc.tar.gz
+tar xvzf dsc.tar.gz
+cd dsc-cassandra-1.1.2/lib
+wget https://github.com/twall/jna/blob/3.4.1/dist/jna.jar?raw=true
+sudo bin/cassandra
+./bin/cassandra-cli
+describe cluster;
+
+Part 5 Setup Cassandra Schema:
+./bin/cqlsh --cql3
+CREATE KEYSPACE big_data
+  WITH strategy_class = 'org.apache.cassandra.locator.SimpleStrategy'
+  AND strategy_options:replication_factor='1';
+
+use big_data;
+
+CREATE TABLE user_tags (
+  user_id varchar,
+  tag varchar,
+  value counter,
+  PRIMARY KEY (user_id, tag)
+);
+
+update user_tags set value=value+1 where user_id = 'paul' and tag = 'cassandra';
+
+select * from user_tags;
+
+Part 5 Ruby to Cassandra:
+sudo apt-get install build-essential # thrift is a native wrapper
+sudo gem install cassandra
+
+Part 6 Write data into Cassandra from Hadoop:
+# let's create a column family to act as an index on what posts users have interacted with
+./bin/cassandra-cli
+create column family user_post_activity
+  with column_type = 'Standard'
+  and comparator = 'LongType';
+
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.0.1.jar \
+  -D mapreduce.job.reduces=0 \
+  -input input/posts_small.xml \
+  -output insert_user_post_activity_job \
+  -mapper mapper_user_posts.rb \
+  -file mapper_user_posts.rb
+
+ruby get_user_posts.rb
+
+CREATE TABLE user_post_activity2 (
+  user_id ascii,
+  time timestamp,
+  post_id ascii,
+  activity_type int,
+  PRIMARY KEY (user_id, time, post_id)
+);
+
+sudo gem install cassandra-cql

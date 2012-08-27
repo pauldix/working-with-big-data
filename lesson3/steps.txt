@@ -1,0 +1,62 @@
+Part 1 Installing Kafka:
+wget http://www.reverse.net/pub/apache/incubator/kafka/kafka-0.7.1-incubating/kafka-0.7.1-incubating-src.tgz
+tar xvzf kafka-0.7.1-incubating-src.tgz
+cd kafka-0.7.1-incubating/
+./sbt update
+./sbt package
+
+# start zookeeper & kafka
+nohup sudo ./bin/zookeeper-server-start.sh config/zookeeper.properties 2>&1 > zookeeper.out &
+nohup sudo ./bin/kafka-server-start.sh config/server.properties 2>&1 > kafka.out &
+
+Part 2 Create Message Producer:
+
+# see ruby code
+
+Part 3 Create Message Consumer:
+
+# see ruby code
+
+# talk about storing offsets. modify consumer to start at 0
+
+Part 4 Write Log Aggregator to HDFS:
+
+# look at the mapper_log.rb
+# to launch. talk about output dirs and overwriting. they should create a script to launch the job
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.0.1.jar \
+  -D mapreduce.job.reduces=0 \
+  -input input/kafka_topics.txt \
+  -output kafka_log_jobs \
+  -mapper mapper_log.rb \
+  -file mapper_log.rb
+
+# talk about setting the number of mappers, vs. reducers
+-D mapreduce.job.reduces=30
+
+Part 5 Create horizontally scalable message consumers:
+# update the kafka config and restart kafka
+
+sudo gem install json
+# look at ruby code
+
+Part 6 Sample from Kafka
+
+# go through code
+
+Part 7 Write Redundant Consumers
+# a few ways to do this. Consumers are responsible for keeping track of what data they last wrote.
+# all consumers connected to a topic and partition get the data.
+# so run hot/cold and keep track somewhere else
+# or run hot/hot and lock on the data processed. we'll do this one.
+# some people use zookeeper for tracking consumers. We'll use redis
+wget http://redis.googlecode.com/files/redis-2.6.0-rc6.tar.gz
+tar xvzf redis-2.6.0-rc6.tar.gz
+cd redredis-2.6.0-rc6
+make
+cd src
+./redis-server
+sudo gem install redis
+sudo gem install json
+
+# better way to do it: use 10 partitions, have consumers read from each one, but block on the read.
+# The number of partitions will determine the concurrency (how many consumers can run at the same time)

@@ -1,0 +1,21 @@
+Step 1 Write KNN:
+
+see ruby code.
+
+Step 2 Predict tags based on words:
+
+first, we need to figure out how to parse the posts
+we'll just use the words for this example
+let's reduce the size of the number of words we use
+
+go through word count example.
+
+cat small_posts.rb | ./mapper_word_count.rb | sort | ./reducer_word_count.rb > unsorted_word_counts.txt
+cat unsorted_word_counts.txt | awk '{printf("%.10d\t%s\n", $2, $1)}' | sort > sorted_word_counts.txt
+tail -n 200000 sorted_word_counts.txt | awk '{print $2}' > words.txt
+
+ok, so now we can only use the 200k most frequent words. now let's extract the posts into sparse arrays
+
+cat posts_mid.xml | ./mapper_feature_extractor.rb > post_arrays.txt
+cat posts_mid.xml | ./mapper_post_words_extractor.rb > post_words.txt
+cat posts_mid.xml | ./mapper_post_tags_extractor.rb > post_tags.txt
