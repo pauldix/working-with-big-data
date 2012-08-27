@@ -28,11 +28,12 @@ update user_tags set value=value+1 where user_id = 'paul' and tag = 'cassandra';
 select * from user_tags;
 
 CREATE TABLE posts (
-  post_id varchar,
+  post_id varchar PRIMARY KEY,
   title varchar,
   body varchar,
+  post_type ascii,
   tags varchar,
-  owner_id long,
+  owner_id ascii,
   created_date timestamp
 );
 
@@ -65,3 +66,18 @@ CREATE TABLE user_post_activity2 (
 );
 
 sudo gem install cassandra-cql
+
+Part 5 Use how Hadoop Reduces work to parallelize writes:
+
+look at mapper_parse_posts.rb
+look at reducer_write_posts.rb
+
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.0.1.jar \
+  -D mapreduce.job.reduces=2 \
+  -input input/posts_small.xml \
+  -output insert_posts_job3 \
+  -mapper mapper_parse_posts.rb \
+  -reducer reducer_write_posts.rb \
+  -file mapper_parse_posts.rb \
+  -file reducer_write_posts.rb \
+  -numReduceTasks 2
