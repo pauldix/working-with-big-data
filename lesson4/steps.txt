@@ -3,6 +3,8 @@ Step 1 Write KNN:
 We're going to write this in Ruby for development time. For real examples,
 you'll want to use C.
 
+# slides
+# draw examples of knn
 # go through knn.rb. leave the metrics calculation for later.
 
 

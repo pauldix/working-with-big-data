@@ -11,6 +11,7 @@ nohup sudo ./bin/kafka-server-start.sh config/server.properties 2>&1 > kafka.out
 
 Part 2 Create Message Producer:
 
+gem install kafka
 # see ruby code
 
 Part 3 Create Message Consumer:
@@ -21,6 +22,14 @@ Part 3 Create Message Consumer:
 
 Part 4 Write Log Aggregator to HDFS:
 
+wget http://redis.googlecode.com/files/redis-2.6.0-rc6.tar.gz
+tar xvzf redis-2.6.0-rc6.tar.gz
+cd redredis-2.6.0-rc6
+make
+cd src
+./redis-server
+sudo gem install redis
+
 # look at the mapper_log.rb
 # to launch. talk about output dirs and overwriting. they should create a script to launch the job
 hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.0.1.jar \
@@ -28,7 +37,8 @@ hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0
   -input input/kafka_topics.txt \
   -output kafka_log_jobs \
   -mapper mapper_log.rb \
-  -file mapper_log.rb
+  -file mapper_log.rb \
+  -numReduceTasks 0
 
 # talk about setting the number of mappers, vs. reducers
 -D mapreduce.job.reduces=30
@@ -41,7 +51,15 @@ sudo gem install json
 
 Part 6 Sample from Kafka
 
-# go through code
+# mention sampling good for high volume data
+# talk about semantic partitioning
+# good for splitting on server, user, etc
+
+# write producer_sample
+# write consumer_sample
+
+# learned about semantic partitioning in kafka
+# learned about sampling from the messages in a topic
 
 Part 7 Write Redundant Consumers
 # a few ways to do this. Consumers are responsible for keeping track of what data they last wrote.
