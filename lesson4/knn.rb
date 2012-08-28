@@ -20,7 +20,7 @@ class Knn
     nearest_neighbors = []
 
     @data.each_with_index do |instance, position|
-      distance = calculate_distance(instance, unknown_instance)
+      distance = calculate_cosign_similarity(instance, unknown_instance)
       next if distance == 0.0 && ignore_duplicates
 
       if nearest_neighbors.length < k
@@ -41,14 +41,12 @@ class Knn
     end
   end
 
-  def calculate_distance(instance1, instance2)
+  def zip_sparse_arrays(instance1, instance2, &block)
     one_position = 0
     two_position = 0
 
     current_one = instance1[one_position]
     current_two = instance2[two_position]
-
-    total_distance = 0.0
 
     while (one_position < instance2.length || two_position < instance2.length)
       index1, value1 = current_one
@@ -59,20 +57,53 @@ class Knn
       value2 ||= 0
 
       if index1 == index2
-        total_distance += (value1 - value2) ** 2
+        block.call(value1, value2)
         one_position += 1
         two_position += 1
         current_one = instance1[one_position]
         current_two = instance2[two_position]
       elsif index1 < index2
-        total_distance += value1 ** 2
+        block.call(value1, 0)
         one_position += 1
         current_one = instance1[one_position]
       else
-        total_distance += value2 ** 2
+        block.call(0, value2)
         two_position += 1
         current_two = instance2[two_position]
       end
+    end
+  end
+
+  def calculate_cosign_similarity(instance1, instance2)
+    dot_product = 0.0
+    zip_sparse_arrays(instance1, instance2) do |value1, value2|
+      dot_product += value1 * value2
+    end
+
+    magnitude1 = magnitude(instance1)
+    magnitude2 = magnitude(instance2)
+
+    if magnitude1 == 0 || magnitude2 == 0
+      1
+    else
+      1 - dot_product / (magnitude1 * magnitude2)
+    end
+  end
+
+  def magnitude(instance)
+    total = 0
+    instance.each do |position_and_value|
+      position, value = position_and_value
+      total += value ** 2
+    end
+    total
+  end
+
+  def calculate_euclidean_distance(instance1, instance2)
+    total_distance = 0.0
+
+    zip_sparse_arrays(instance1, instance2) do |value1, value2|
+      total_distance = (value1 - value2) ** 2
     end
 
     return Math.sqrt(total_distance)

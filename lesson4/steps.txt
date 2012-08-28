@@ -1,21 +1,63 @@
 Step 1 Write KNN:
 
-see ruby code.
+We're going to write this in Ruby for development time. For real examples,
+you'll want to use C.
 
-Step 2 Predict tags based on words:
+# go through knn.rb. leave the metrics calculation for later.
 
-first, we need to figure out how to parse the posts
+
+************************************************************************************************
+Step 2 Write euclidean and cosine
+
+# add to knn.rb
+# go through knn_tester.rb
+
+
+************************************************************************************************
+Step 3 Convert documents to a sparse array:
+
+the vector space model of documents
+
+first, we need to figure out how to parse the posts. use tags, only title, etc
 we'll just use the words for this example
+
+first, we need to define a dictionary that we're going to use
 let's reduce the size of the number of words we use
 
-go through word count example.
+# do mapper_word_count, reducer_word_count
 
 cat small_posts.rb | ./mapper_word_count.rb | sort | ./reducer_word_count.rb > unsorted_word_counts.txt
 cat unsorted_word_counts.txt | awk '{printf("%.10d\t%s\n", $2, $1)}' | sort > sorted_word_counts.txt
 tail -n 200000 sorted_word_counts.txt | awk '{print $2}' > words.txt
 
-ok, so now we can only use the 200k most frequent words. now let's extract the posts into sparse arrays
+ok, so now we can only use the 200k most frequent words.
+
+now let's extract the posts into sparse arrays
 
 cat posts_mid.xml | ./mapper_feature_extractor.rb > post_arrays.txt
+
+# this is for finding it later
 cat posts_mid.xml | ./mapper_post_words_extractor.rb > post_words.txt
-cat posts_mid.xml | ./mapper_post_tags_extractor.rb > post_tags.txt
+
+*************************************************************************************************
+Step 4 Predict tags based on words:
+
+create post_words.txt
+create post_tags.txt
+
+# talk about how this method compares to classification
+
+# go through find_closest_posts.rb
+
+ruby find_closest_posts.rb 7178789
+ruby find_closest_posts.rb 7178763
+
+
+*************************************************************************************************
+Step 5 Improve execution time:
+
+go through find_closest_posts_filtered_by_tags.rb
+
+ruby find_closest_posts_filtered_by_tags.rb 7178763
+
+benchmark it against find_closest_posts.rb

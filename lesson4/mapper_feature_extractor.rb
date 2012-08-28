@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
+require 'json'
+
 # first read in the dictionary
 word_to_array_position = {}
 
@@ -30,8 +33,6 @@ STDIN.each do |line|
 
     array_positions_and_counts = array_positions_and_counts.sort {|a, b| a.first <=> b.first}
 
-    features_as_string = array_positions_and_counts.map {|a| a.join(",")}.join("|")
-
-    puts "#{post_id}\t#{features_as_string}"
+    puts "#{post_id}\t#{array_positions_and_counts.to_json}"
   end
 end
