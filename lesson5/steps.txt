@@ -1,0 +1,45 @@
+Step 1: Cross Validation
+
+# explain how cross validation works
+# show cross_validator
+# difficulty of predicting posts completely correct
+# use multiple metrics
+
+
+****************************************************************************
+Step 2: Integrate into Production
+
+# go through tag_recommender_service.rb
+
+
+****************************************************************************
+Step 3: Version model and track feedback
+
+# do a drawing of the full data cycle.
+# our tag recommender can do this after the fact using our cross validation tools
+# however, still useful to know, because the recommendations will influence
+# what tags a user gives to a question.
+
+
+****************************************************************************
+Step 4: Write a test harness to compare versioned models
+
+# can't run both models in same process, might be too much memory
+# need a way to consistently run through tests in different processes
+
+# go through post_splitter.rb
+
+# have each model output accuracy counts.
+# or even better, have each model output predictions
+
+
+****************************************************************************
+Step 5: Run multiple models in production
+
+# now show running multiple models.
+# We'll have to have a service which routes to versioned model services.
+# another layer of abstraction. we don't want the web app deciding which model to use.
+# need a clear separation of concerns and the web app should know nothing about
+# the underlying complexity.
+
+# add the user id to the request so we can be sure to segment on users if we want to later.
