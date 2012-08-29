@@ -56,7 +56,7 @@ ruby find_closest_posts.rb 7178763
 
 
 *************************************************************************************************
-Step 5 Improve execution time:
+Step 5 Improve execution time (update the filtered to use TagRecommender):
 
 go through find_closest_posts_filtered_by_tags.rb
 
