@@ -51,8 +51,8 @@ create post_tags.txt
 
 # go through find_closest_posts.rb
 
-ruby find_closest_posts.rb 7178789
 ruby find_closest_posts.rb 7178763
+ruby find_closest_posts.rb 7264752
 
 
 *************************************************************************************************
