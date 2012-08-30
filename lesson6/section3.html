@@ -19,7 +19,6 @@
 
 <body>
   <script>
-  console.log('hi')
     d3.json("tag_counts_last_30_days.json", function(allTags) {
       var topTags = allTags.slice(0, 20);
 
@@ -38,8 +37,8 @@
         .enter()
         .append("li")
           .attr("class", "bar")
-          .style("width", function(d) {console.log(d[0]); return scale(d[0])})
-          .text(function(d) {return d[1]})
+          .style("width", function(d) { return scale(d[0]); })
+          .text(function(d) { return d[1]; });
     });
   </script>
 </body>

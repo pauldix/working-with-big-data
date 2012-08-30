@@ -74,8 +74,13 @@ d3.select("body").append("ol").selectAll("li").data(tagCounts.slice(0, 20)).ente
 
 
 ******************************************************************************************************************
-Step 3: Create a Histogram
+Step 3: Create a bar chart
 
+cover section3.html
+
+# you have more code, but you have full control.
 
 ******************************************************************************************************************
 Step 4: Create a time series
+
+cover section4.html (left off on line 28)
