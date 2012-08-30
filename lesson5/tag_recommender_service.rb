@@ -31,6 +31,8 @@ end
 
 # that was a lot of data to load. also in memory
 # so we should be multi-threaded and not multi-process
+# could keep the dictionary in redis
+
 
 # with knn we need all training data loaded. how to limit this?
 # option 1: only load recent posts. bring domain knowledge to it. we know
@@ -43,3 +45,11 @@ end
 # refinement: order the tag to post id index by post popularity/time
 #             only look at the 100 posts close. still needs to be fast.
 #             probably want an evented server, plus threads for the calcs.
+# option 3: more domain knowledge: if the user is posting a question, there's a
+#           good chance they've been browsing related questions on the site recently.
+#           make a first pass at guessing the tags to those posts.
+
+# bring tag recommender into production with a service
+# looked at issues regarding memory use and performance
+# there could be many other refinements
+# next lesson we'll look at how to test refinments with real users
