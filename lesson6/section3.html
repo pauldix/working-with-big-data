@@ -1,0 +1,46 @@
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v2.js"></script>
+  <style>
+    ul.chart {
+      list-style: none;
+    }
+    li.bar {
+      background-color:steelBlue;
+      color:white;
+      height:2em;
+      line-height:2em;
+      padding-right:1em;
+      margin-bottom:2px;
+      text-align:right;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+  console.log('hi')
+    d3.json("tag_counts_last_30_days.json", function(allTags) {
+      var topTags = allTags.slice(0, 20);
+
+      var width = 600;
+      var countExtent = d3.extent(topTags, function(t) {
+        return t[0];
+      });
+
+      var scale = d3.scale.linear().domain(countExtent).range([50, width]);
+
+      d3.select("body")
+        .append("ul")
+          .attr("class", "chart")
+        .selectAll("li")
+        .data(topTags)
+        .enter()
+        .append("li")
+          .attr("class", "bar")
+          .style("width", function(d) {console.log(d[0]); return scale(d[0])})
+          .text(function(d) {return d[1]})
+    });
+  </script>
+</body>
+</html>

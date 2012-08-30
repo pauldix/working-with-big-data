@@ -1,0 +1,81 @@
+Step 1: Prepare raw data
+
+go over the code for post_parser.rb (don't write)
+write mapper_tag_counter, but start with the STDIN loop already defined
+
+gem install active_support
+write the reducer_tag_aggregator. talk about whether we want to return raw data or rollups
+
+tail -n 3000000 posts.xml | ./mapper_tag_counter.rb | sort | ./reducer_tags_by_week.rb > tags_by_week.txt
+tail -n 3000000 posts.xml | ./mapper_tag_counter.rb | sort | ./reducer_tags_last_30_days.rb | sort > tags_last_30_days.json
+
+
+******************************************************************************************************************
+Step 2: D3 Basics
+
+bring up D3 website
+
+* open source javascript visualization toolkit created by Mike Bostock
+* evolution of years of experience writing Protovis
+* more than a charting library
+* you can build charting libraries with it
+
+(first install JSONView on the presenter machine)
+
+show the server (don't write)
+ruby server.rb -p 3001
+http://localhost:3001/tags/javascript
+
+show section2.html and bring it up along with jsconsole
+
+// show some data
+d3.json("tags/javascript", function(data) {console.log(data)});
+
+// put somewhere to access
+d3.json("tags/javascript", function(data) {window.tagHistory = data});
+
+// do drawing of chart to show scale, domain, range.
+// scale converts the domain (the input) to a range (the output/pixels)
+
+// range determined by the size of the chart
+
+// domain determined by the min and max of the data. or fixed bounds
+tagCountExtent = d3.extent(tagHistory.data, function(d) {return d[1];})
+
+// d3 scales make it easy to map values to their corresponding pixel location in a visualization
+tagCountScale = d3.scale.linear()
+tagCountScale.domain(tagCountExtent)
+tagCountScale.range([0, 300])
+
+// or use the more idiomatic d3 way: chaining
+tagCountScale.domain(tagCountExtent).range([0, 300])
+
+tagCountExtent
+tagCountScale(754)
+tagCountScale(2067)
+tagCountScale(1000)
+tagCountScale(3000)
+
+// bound the output
+tagCountScale.clamp(true)
+tagCountScale(3000)
+
+// selecting elements
+d3.select("body").append("h1").text("d3 ftw")
+d3.select("body").append("h1").text("moar h1")
+d3.select("h1")
+d3.selectAll("h1")
+
+d3.select("body").append("h1").text("h1 with class").attr("class", "foo")
+d3.selectAll("h1.foo")
+
+d3.json("tag_counts_last_30_days.json", function(d) {window.tagCounts = d})
+d3.select("body").append("ol").selectAll("li").data(tagCounts.slice(0, 20)).enter().append("li").text(function(d) {return d[1]})
+
+
+******************************************************************************************************************
+Step 3: Create a Histogram
+
+
+******************************************************************************************************************
+Step 4: Create a time series
