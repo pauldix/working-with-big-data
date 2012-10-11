@@ -35,36 +35,47 @@
 <p>
   The goal of these live lessons is to touch on the various aspects of big data at a high level. For instance, instead of going into
   detail on the many nuances of Hadoop, we'll just get it set up and use it in conjunction with other tools like Cassandra. Further,
-  we'll go into the algorithms for processing and close out with tools for visualization. We'll be going through the full-stack instead of
-  deep on a specific area.
+  we'll go into how to work with and integrate algorithms and close out with tools for visualization. We'll be going through the
+  full-stack to see how the different pieces of a big data system fit together.
 </p>
 <ol>
   <li>
-    <a href="lesson1.html">Lesson 1: Introduction to Big Data</a>
-  </li>
-  <li>
-    Lesson 2: Building a Big Data Infrastructure Part 1: Storage
+    <a href="lesson1.html">Lesson 1: Unstructured storage and Hadoop</a>
     <ol>
-      <li>Set up Hadoop</li>
-      <li>Load data into Hadoop</li>
-      <li>Create a MapReduce job</li>
-      <li>Set up Cassandra</li>
-      <li>Model data in Cassandra</li>
-      <li>Run Hadoop with Cassandra</li>
-      <li>Use Cassandra and SQL together</li>
+      <li>Set up a basic Hadoop installation</li>
+      <li>Write data into the Hadoop File System</li>
+      <li>Write a Hadoop streaming job to process text files</li>
     </ol>
   </li>
   <li>
-    Lesson 3: Building a Big Data Infrastructure Part 2: Processing and Messaging
+    <a href="lesson2.html">Lesson 2: Structured storage and Cassandra</a>
+    <ol>
+      <li>Set up a basic Cassandra installation</li>
+      <li>Create a Cassandra schema for storing data</li>
+      <li>Store and retrieve data from Cassandra using Ruby</li>
+      <li>Write data into Cassandra from a Hadoop streaming job</li>
+      <li>Use Hadoop to parallelize writes</li>
+    </ol>
   </li>
   <li>
-    Lesson 4: Algorithms Part 1: Batch
+    <a href="lesson3.html">Lesson 3: Real-time Processing and Messaging</a>
+    <ol>
+      <li>Set up the Kafka messaging system</li>
+      <li>Publish and consume data from Kafka using Ruby</li>
+      <li>Aggregate log files into Hadoop with Kafka and a Ruby Consumer</li>
+      <li>Create horizontally scalable message consumers</li>
+      <li>Sample messages using Kafka's partitioning</li>
+      <li>Create redundant message consumers for high availability</li>
+    </ol>
   </li>
   <li>
-    Lesson 5: Algorithms Part 2: Online
+    <a href="lesson4.html">Lesson 4: Running machine earning algorithms in a big data architecture</a>
   </li>
   <li>
-    Lesson 6: Visualizations
+    Lesson 5: Experimentation and running algorithms in production
+  </li>
+  <li>
+    Lesson 6: Basic Visualizations
   </li>
 </ol>
 
@@ -74,7 +85,7 @@
 
 <h3>Discussion</h3>
 
-<p>Ask questions about the lectures, or about anything big data related on in the <a href="https://groups.google.com/forum/#!forum/working-with-big-data">Working with Big Data Group</a>.</p>
+<p>Ask questions about the lectures, or about anything related to big data in the <a href="https://groups.google.com/forum/#!forum/working-with-big-data">Working with Big Data Group</a>.</p>
       </section>
     </div>
     <footer>
